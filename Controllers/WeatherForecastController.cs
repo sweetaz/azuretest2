@@ -21,15 +21,19 @@ public class WeatherForecastController : ControllerBase
     [HttpGet(Name = "GetWeatherForecast")]
     public IEnumerable<WeatherForecast> Get()
     {
-        _logger.LogError("AZDEBUG: WeatherForecastController.GetWeatherForecast() called (logger error)");
-        _logger.LogInformation("AZDEBUG: WeatherForecastController.GetWeatherForecast() called (logger info)");
-        System.Console.WriteLine("AZDEBUG: WeatherForecastController.GetWeatherForecast() called (stdout)");
+        string message = $"AZDEBUG: WeatherForecastController.GetWeatherForecast() called at {DateTime.UtcNow.ToLongTimeString()}";
+        _logger.LogInformation($"{message} (LogInformation)");
+        _logger.LogWarning($"{message} (LogWarning)");
+        _logger.LogError($"{message} (LogError)");
+        _logger.LogCritical($"{message} (LogCritical)");
+        System.Console.WriteLine($"{message} (stdout)");
+        System.Console.Error.WriteLine($"{message} (stderr)");
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = DateTime.Now.AddDays(index),
             TemperatureC = Random.Shared.Next(-20, 55),
             // Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            Summary = "foo"
+            Summary = message
         })
         .ToArray();
     }
